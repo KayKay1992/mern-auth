@@ -3,7 +3,7 @@ import { useRef, useState , useEffect} from "react"
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage"
 import { useDispatch } from "react-redux"
 import { app } from "../firebase"
-import { updateUserFailure, updateUserStart, updateUserSuccess } from "../redux/user/userSlice"
+import { updateUserStart, updateUserSuccess, updateUserFailure } from "../redux/user/userSlice"
 
 
 export default function Profile() {
@@ -15,7 +15,7 @@ export default function Profile() {
   const [formData, setFormData] = useState({})
   const [updateSuccess, setUpdateSuccess] = useState(false)
 
-  const {currentUser, error, loading} = useSelector(state => state.user)
+  const {currentUser, error, loading} = useSelector((state) => state.user)
 
   useEffect(() => {
     if(image) {
@@ -55,7 +55,7 @@ export default function Profile() {
   const handleSubmit = async (e)=> {
     e.preventDefault()
   try{
-    dispatchEvent(updateUserStart())
+    dispatch(updateUserStart())
     const res =await fetch(`/api/user/update/${currentUser._id}`, {
       method: 'POST',
       headers: {
