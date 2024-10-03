@@ -3,7 +3,7 @@ import { useRef, useState , useEffect} from "react"
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage"
 import { useDispatch } from "react-redux"
 import { app } from "../firebase"
-import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserStart, deleteUserFailure, deleteUserSuccess } from "../redux/user/userSlice"
+import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserStart, deleteUserFailure, deleteUserSuccess, signOut } from "../redux/user/userSlice"
 
 
 export default function Profile() {
@@ -93,6 +93,15 @@ const handleDeleteAccount = async (e)=> {
       dispatch(deleteUserFailure(error))
     }
   }
+  const handleSignOut =async() => {
+    try{
+      await fetch('/api/auth/signout')
+      dispatch(signOut())
+    }catch(error){
+       console.log(error)
+    }
+  }
+
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className='text-3xl font-semibold text-center my-7 '>Profile</h1>
@@ -127,11 +136,11 @@ const handleDeleteAccount = async (e)=> {
         <span  onClick={handleDeleteAccount} className="text-red-700 cursor-pointer ">
           Delete Account
         </span>
-        <span className="text-red-700 cursor-pointer ">
+        <span onClick={handleSignOut} className="text-red-700 cursor-pointer ">
           Sign Out
         </span>
       </div>
-      {/* <p className="text-red-700 mt-5">{error && 'Something went wrong' }</p> */}
+      <p className="text-red-700 mt-5">{error && 'Something went wrong' }</p>
       <p className="text-green-700 mt-5">{updateSuccess && 'User is updated succesfully'}</p>
        {/* <p className="text-red-700">{error && 'something went wrong'}</p>  */}
 
