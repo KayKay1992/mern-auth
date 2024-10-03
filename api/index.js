@@ -18,9 +18,7 @@ mongoose.connect(process.env.MONGO_URI).then(()=> {
   
     const __dirname = path.resolve()
 
-app.listen(3000, () => {
-    console.log('Server running on port 3000');
-})
+
 const app = express();
 app.use(express.static(path.join(__dirname, '/client/dist')));
 
@@ -30,6 +28,9 @@ app.get('*', (req, res) => {
 
 app.use(express.json());
 app.use(cookieParser());
+app.listen(3000, () => {
+    console.log('Server running on port 3000');
+})
 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
