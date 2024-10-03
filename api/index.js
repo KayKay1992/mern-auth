@@ -1,4 +1,4 @@
-
+import path from 'path'
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -9,8 +9,6 @@ import authRoutes from './routes/auth.route.js';
 
 
 dotenv.config();
-const app = express();
-
 
 mongoose.connect(process.env.MONGO_URI).then(()=> {
     console.log('Connected to MongoDB')})
@@ -18,9 +16,17 @@ mongoose.connect(process.env.MONGO_URI).then(()=> {
         console.error(err);    
     })
   
+    const __dirname = path.resolve()
+
 app.listen(3000, () => {
     console.log('Server running on port 3000');
 })
+const app = express();
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
 
 app.use(express.json());
 app.use(cookieParser());
